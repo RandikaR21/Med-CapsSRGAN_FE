@@ -1,6 +1,7 @@
 import './App.css';
-import React, {useRef, useState} from 'react';
-import FileUploader from "./components/FileUploader";
+import React, { useState} from 'react';
+import FileUploader from "./components/FileUploader/FileUploader";
+import ImagePreviewer from "./components/ImagePreviewer/ImagePreviewer";
 
 function App() {
   const [preview, setPreview] = useState(false)
@@ -11,7 +12,7 @@ function App() {
   }
   return(
       <>
-          <FileUploader fileUpload = {handleFileUpload.bind(this)}/>
+          { !preview ? <FileUploader fileUpload={handleFileUpload.bind(this)}/> : <ImagePreviewer file = {imageFile} />}
       </>
   )
 }
