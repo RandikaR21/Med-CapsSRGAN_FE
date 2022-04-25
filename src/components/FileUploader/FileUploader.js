@@ -1,13 +1,21 @@
-import React , {useRef} from "react";
+import React, {useRef, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCloudUpload} from "@fortawesome/free-solid-svg-icons";
+import {faCloudUpload, faImage, faXmark} from "@fortawesome/free-solid-svg-icons";
 import './FileUploader.css'
+import NavBar from "../NavBar/NavBar";
 
 function FileUploader(props){
     const dropArea = useRef(null)
     const input = useRef(null)
     const dragText = useRef(null)
-    let file;
+    let [fileName, setFileNameState] = useState();
+    let file = null;
+    let [fileState, setFileState] = useState(file)
+    const [chooseFileBtnDisable, setFileBtnDisable] = useState(false)
+
+    const refresh = ()=>{
+        window.location.reload();
+    }
 
     const buttonClick = () => {
         input.current.click()
@@ -15,6 +23,7 @@ function FileUploader(props){
 
     const inputOnchange = () => {
         file = input.current.files[0];
+        setFileBtnDisable(true)
         dropArea.current.classList.add("active");
         showFile();
     }
@@ -43,10 +52,13 @@ function FileUploader(props){
             let fileReader = new FileReader(); //creating new FileReader object
             fileReader.onload = ()=>{
                 let fileURL = fileReader.result; //passing user file source in fileURL variable
-                props.fileUpload(fileURL)
+                // props.fileUpload(fileURL)
                 // UNCOMMENT THIS BELOW LINE. I GOT AN ERROR WHILE UPLOADING THIS POST SO I COMMENTED IT
-                // let imgTag = `<img src="${fileURL}" alt="image">`; //creating an img tag and passing user selected file source inside src attribute
-                // dropArea.current.innerHTML = imgTag; //adding that created img tag inside dropArea container
+                 //creating an img tag and passing user selected file source inside src attribute
+                dropArea.current.innerHTML = `<img src="${fileURL}" alt="image">`; //adding that created img tag inside dropArea container
+                setFileNameState(file.name)
+                setFileState(file)
+
             }
             fileReader.readAsDataURL(file);
         }else{
@@ -55,18 +67,40 @@ function FileUploader(props){
             dragText.current.textContent = "Drag & Drop to Upload File";
         }
     }
+
     return(
         <>
-            <div
-                onDragOver={dropAreaDragOver}
-                onDragLeave={dropAreaDragLeave}
-                onDrop={dropAreaDrop}
-                ref={dropArea} className={"drag-area"}>
-                <div className={"icon"}><FontAwesomeIcon icon={faCloudUpload}/></div>
-                <header ref={dragText}>Drag & Drop to Upload File</header>
-                <span>OR</span>
-                <button onClick = {buttonClick}>Browse File</button>
-                <input onChange={inputOnchange} ref={input} type="file" hidden />
+            <NavBar/>
+            <div className={"fileUploaderContainer"}>
+                <h1>Chest X-Ray Image Enhance</h1>
+                <div className={"grid"}>
+                    <div className={"gridLeft"}>
+                        <div
+                            onDragOver={dropAreaDragOver}
+                            onDragLeave={dropAreaDragLeave}
+                            onDrop={dropAreaDrop}
+                            ref={dropArea}
+                            className={"drag-area"}>
+                            <p className={"icon"}><FontAwesomeIcon icon={faCloudUpload}/></p>
+                            <p className={"dragText"} ref={dragText}>Drag file to upload</p>
+                            <input onChange={inputOnchange} ref={input} type="file" hidden />
+                        </div>
+                        <button onClick = {buttonClick} className={"chooseBtn"} disabled={chooseFileBtnDisable} >Choose file</button>
+                    </div>
+                    <div className={"gridRight"}>
+                        {fileState != null ?
+                            <div style={{padding: 0}}>
+                                <div className={"detailCard"}>
+                                    <p className={"cardIcon"}><FontAwesomeIcon icon={faImage}/></p>
+                                    <p className={"imageFileName"}>{fileName}</p>
+                                    <button onClick={refresh}><FontAwesomeIcon icon={faXmark}/></button>
+                                </div>
+                                <div className={"loadingAnimation"}>
+                                </div>
+                                <button className={"enhanceBtn"}>Enhance Image</button>
+                            </div>:<p>Upload an chest x ray image to enhance</p>}
+                    </div>
+                </div>
             </div>
         </>
     )
