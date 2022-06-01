@@ -23,6 +23,7 @@ function FileUploader(props){
 
     const inputOnchange = () => {
         file = input.current.files[0];
+        console.log(file)
         setFileBtnDisable(true)
         dropArea.current.classList.add("active");
         showFile();
@@ -52,13 +53,9 @@ function FileUploader(props){
             let fileReader = new FileReader(); //creating new FileReader object
             fileReader.onload = ()=>{
                 let fileURL = fileReader.result; //passing user file source in fileURL variable
-                // props.fileUpload(fileURL)
-                // UNCOMMENT THIS BELOW LINE. I GOT AN ERROR WHILE UPLOADING THIS POST SO I COMMENTED IT
-                 //creating an img tag and passing user selected file source inside src attribute
                 dropArea.current.innerHTML = `<img src="${fileURL}" alt="image">`; //adding that created img tag inside dropArea container
                 setFileNameState(file.name)
                 setFileState(file)
-
             }
             fileReader.readAsDataURL(file);
         }else{
@@ -66,6 +63,23 @@ function FileUploader(props){
             dropArea.current.classList.remove("active");
             dragText.current.textContent = "Drag & Drop to Upload File";
         }
+    }
+
+    const enhanceImage = () => {
+        console.log("Enhance Image")
+        console.log(fileState)
+        const formData = new FormData()
+        formData.append("file", fileState)
+        console.log(formData)
+        fetch("http://127.0.0.1:5000/upload", {
+            method: "POST",
+            body: formData
+        }).then((response) => (response.blob()).then((blob) => {
+            console.log(blob)
+            const enhanceImageObjectURL = URL.createObjectURL(blob);
+            const originalImageObjectURL = URL.createObjectURL(fileState);
+            props.fileUpload(enhanceImageObjectURL, originalImageObjectURL)
+        }))
     }
 
     return(
@@ -97,7 +111,7 @@ function FileUploader(props){
                                 </div>
                                 <div className={"loadingAnimation"}>
                                 </div>
-                                <button className={"enhanceBtn"}>Enhance Image</button>
+                                <button className={"enhanceBtn"} onClick={enhanceImage} >Enhance Image</button>
                             </div>:<p>Upload an chest x ray image to enhance</p>}
                     </div>
                 </div>
