@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import './ImagePreviewer.css';
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import ImageSlider from "react-image-comparison-slider";
 import reactImageSize from 'react-image-size';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDownload } from '@fortawesome/free-solid-svg-icons'
+import { faDownload} from '@fortawesome/free-solid-svg-icons'
+import {
+    ReactCompareSlider,
+    ReactCompareSliderImage
+} from "react-compare-slider";
 
 
 function ImagePreviewer(props) {
@@ -46,13 +49,31 @@ function ImagePreviewer(props) {
                     <li> Height: {imgHeight} px </li>
                     <li> Width: {imgWidth} px </li>
                 </ul>
-                <br />
-                <h1> Compare Original and Enhanced </h1>
-                <div style={
-                    { width: "100%", height: 600, display: "flex", alignContent: "center" }} >
-                    <ImageSlider image1={props.enchancedFile} image2={props.originalFile} sliderWidth={3} sliderColor="red" handleColor="red" handleBackgroundColor="white" />
-                </div> <button className={"downloadBtn"} onClick={downloadImage} ><FontAwesomeIcon icon={faDownload} /> Download Image</button >
+                <br/>
+                <button className={"downloadBtn"} onClick={downloadImage} ><FontAwesomeIcon icon={faDownload} /> Download Image</button >
             </div>
+            <ReactCompareSlider
+                    itemOne=
+                    {
+                        <ReactCompareSliderImage 
+                        src={props.originalFile} 
+                        alt="Image one" 
+                        style={{ filter: "grayscale(1)" }}
+                        />
+                    }
+                    itemTwo=
+                    {
+                        <ReactCompareSliderImage 
+                        src={props.enchancedFile} 
+                        alt="Image two" 
+                        />
+                    }
+                    style={{
+                        display: "flex",
+                        width: "100%",
+                        height: "100vh"
+                      }}
+                />
         </>
     )
 }
