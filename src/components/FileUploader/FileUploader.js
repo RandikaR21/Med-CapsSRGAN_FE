@@ -71,7 +71,7 @@ function FileUploader(props){
         const formData = new FormData()
         formData.append("file", fileState)
         console.log(formData)
-        fetch("http://0.0.0.0:8000/uploadfile", {
+        fetch("http://localhost:8000/uploadfile", {
             method: "POST",
             body: formData
         }).then((response) => (response.blob()).then((blob) => {
