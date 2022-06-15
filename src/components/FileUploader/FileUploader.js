@@ -71,7 +71,7 @@ function FileUploader(props){
         const formData = new FormData()
         formData.append("file", fileState)
         console.log(formData)
-        fetch("http://127.0.0.1:8000/uploadfile", {
+        fetch("http://0.0.0.0:8000/uploadfile", {
             method: "POST",
             body: formData
         }).then((response) => (response.blob()).then((blob) => {
@@ -84,7 +84,7 @@ function FileUploader(props){
 
     return(
         <>
-            <NavBar/>
+            {/* <NavBar/> */}
             <div className={"fileUploaderContainer"}>
                 <h1>Chest X-Ray Image Enhance</h1>
                 <div className={"grid"}>
