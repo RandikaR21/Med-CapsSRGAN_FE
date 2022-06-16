@@ -5,14 +5,17 @@ import ImagePreviewer from "./components/ImagePreviewer/ImagePreviewer";
 
 function App() {
   const [preview, setPreview] = useState(false)
-  const [imageFile, setImageFile] = useState()
-  const handleFileUpload = (file) => {
-    setImageFile(file)
+  const [originalImageFile, setOriginalImageFile] = useState()
+  const [enhancedImageFile, setEnhancedImageFile] = useState()
+  const handleFileUpload = (enhancedFile, originalFile) => {
+    setEnhancedImageFile(enhancedFile)
+    setOriginalImageFile(originalFile)
     setPreview(true)
   }
   return(
       <>
-          { !preview ? <FileUploader fileUpload={handleFileUpload.bind(this)}/> : <ImagePreviewer file = {imageFile} />}
+      <FileUploader fileUpload={handleFileUpload.bind(this)}/>
+      { !preview ?  <></>: <ImagePreviewer enchancedFile = {enhancedImageFile} originalFile = {originalImageFile}/>}
       </>
   )
 }

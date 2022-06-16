@@ -1,4 +1,58 @@
-.imageContainer{
-    box-shadow: 2px 2px 15px gray;
-    background-color: aliceblue;
+div {
+    padding: 0;
+}
+
+.imageContainer {
+    width: 60%;
+    margin: 30px 20%;
+    background: #FFFAFA;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: justify;
+}
+
+h1 {
+    font-family: 'Circular Std', serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 26px;
+    line-height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #000000;
+    width: 100%;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(128, 128, 128, 0.75);
+    margin-bottom: 20px;
+}
+
+.imagePreview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 0;
+}
+
+.imgClass {
+    object-fit: cover;
+    width: 100%;
+}
+
+.downloadBtn {
+    background-color: DodgerBlue;
+    border: none;
+    color: white;
+    padding: 12px 30px;
+    cursor: pointer;
+    font-size: 20px;
+    width: 60%;
+    margin: 20px 20% 0 20%;
+    border-radius: 5px;
+    box-shadow: 2px 4px 5px rgba(0, 0, 0, 0.25);
 }

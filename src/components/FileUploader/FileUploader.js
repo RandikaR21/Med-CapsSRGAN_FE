@@ -1,13 +1,20 @@
-import React , {useRef} from "react";
+import React, {useRef, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCloudUpload} from "@fortawesome/free-solid-svg-icons";
+import {faCloudUpload, faImage, faXmark} from "@fortawesome/free-solid-svg-icons";
 import './FileUploader.css'
 
-function FileUploader(props){
+function FileUploader(props) {
     const dropArea = useRef(null)
     const input = useRef(null)
     const dragText = useRef(null)
-    let file;
+    let [fileName, setFileNameState] = useState();
+    let file = null;
+    let [fileState, setFileState] = useState(file)
+    const [chooseFileBtnDisable, setFileBtnDisable] = useState(false)
+
+    const refresh = () => {
+        window.location.reload();
+    }
 
     const buttonClick = () => {
         input.current.click()
@@ -15,6 +22,8 @@ function FileUploader(props){
 
     const inputOnchange = () => {
         file = input.current.files[0];
+        console.log(file)
+        setFileBtnDisable(true)
         dropArea.current.classList.add("active");
         showFile();
     }
@@ -39,34 +48,73 @@ function FileUploader(props){
     const showFile = () => {
         let fileType = file.type; //getting selected file type
         let validExtensions = ["image/jpeg", "image/jpg", "image/png"]; //adding some valid image extensions in array
-        if(validExtensions.includes(fileType)){ //if user selected file is an image file
+        if (validExtensions.includes(fileType)) { //if user selected file is an image file
             let fileReader = new FileReader(); //creating new FileReader object
-            fileReader.onload = ()=>{
+            fileReader.onload = () => {
                 let fileURL = fileReader.result; //passing user file source in fileURL variable
-                props.fileUpload(fileURL)
-                // UNCOMMENT THIS BELOW LINE. I GOT AN ERROR WHILE UPLOADING THIS POST SO I COMMENTED IT
-                // let imgTag = `<img src="${fileURL}" alt="image">`; //creating an img tag and passing user selected file source inside src attribute
-                // dropArea.current.innerHTML = imgTag; //adding that created img tag inside dropArea container
+                dropArea.current.innerHTML = `<img src="${fileURL}" alt="image">`; //adding that created img tag inside dropArea container
+                setFileNameState(file.name)
+                setFileState(file)
             }
             fileReader.readAsDataURL(file);
-        }else{
+        } else {
             alert("This is not an Image File!");
             dropArea.current.classList.remove("active");
             dragText.current.textContent = "Drag & Drop to Upload File";
         }
     }
-    return(
+
+    const enhanceImage = () => {
+        console.log("Enhance Image")
+        console.log(fileState)
+        const formData = new FormData()
+        formData.append("file", fileState)
+        console.log(formData)
+        fetch("http://140.238.231.135:8000/uploadfile", {
+            method: "POST",
+            body: formData
+        }).then((response) => (response.blob()).then((blob) => {
+            console.log(blob)
+            const enhanceImageObjectURL = URL.createObjectURL(blob);
+            const originalImageObjectURL = URL.createObjectURL(fileState);
+            props.fileUpload(enhanceImageObjectURL, originalImageObjectURL)
+        }))
+    }
+
+    return (
         <>
-            <div
-                onDragOver={dropAreaDragOver}
-                onDragLeave={dropAreaDragLeave}
-                onDrop={dropAreaDrop}
-                ref={dropArea} className={"drag-area"}>
-                <div className={"icon"}><FontAwesomeIcon icon={faCloudUpload}/></div>
-                <header ref={dragText}>Drag & Drop to Upload File</header>
-                <span>OR</span>
-                <button onClick = {buttonClick}>Browse File</button>
-                <input onChange={inputOnchange} ref={input} type="file" hidden />
+            <div className={"fileUploaderContainer"}>
+                <h1>Chest X-Ray Image Enhance</h1>
+                <div className={"grid"}>
+                    <div className={"gridLeft"}>
+                        <div
+                            onDragOver={dropAreaDragOver}
+                            onDragLeave={dropAreaDragLeave}
+                            onDrop={dropAreaDrop}
+                            ref={dropArea}
+                            className={"drag-area"}>
+                            <p className={"icon"}><FontAwesomeIcon icon={faCloudUpload}/></p>
+                            <p className={"dragText"} ref={dragText}>Drag file to upload</p>
+                            <input onChange={inputOnchange} ref={input} type="file" hidden/>
+                        </div>
+                        <button onClick={buttonClick} className={"chooseBtn"} disabled={chooseFileBtnDisable}>Choose
+                            file
+                        </button>
+                    </div>
+                    <div className={"gridRight"}>
+                        {fileState != null ?
+                            <div style={{padding: 0}}>
+                                <div className={"detailCard"}>
+                                    <p className={"cardIcon"}><FontAwesomeIcon icon={faImage}/></p>
+                                    <p className={"imageFileName"}>{fileName}</p>
+                                    <button onClick={refresh}><FontAwesomeIcon icon={faXmark}/></button>
+                                </div>
+                                <div className={"loadingAnimation"}>
+                                </div>
+                                <button className={"enhanceBtn"} onClick={enhanceImage}>Enhance Image</button>
+                            </div> : <p>Upload an chest x ray image to enhance</p>}
+                    </div>
+                </div>
             </div>
         </>
     )
