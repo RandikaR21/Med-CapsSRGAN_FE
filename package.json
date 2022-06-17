@@ -17,6 +17,7 @@
     "react-img-zoom": "^0.1.0",
     "react-loading-spin": "^2.1.9",
     "react-scripts": "5.0.0",
+    "react-toastify": "^9.0.4",
     "react-zoom-pan-pinch": "^2.1.3",
     "web-vitals": "^2.1.4"
   },
