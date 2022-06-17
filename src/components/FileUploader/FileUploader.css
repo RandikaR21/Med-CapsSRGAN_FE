@@ -35,28 +35,26 @@ h1{
 
 
 .fileUploaderContainer{
-    width: 60%;
-    margin: 30px 20%;
+    width: 80%;
+    margin: 30px 10%;
     background: #FFFAFA;
     box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.25);
     border-radius: 20px;
     padding: 30px;
-    opacity: 0.8;
 
 }
 
 .grid{
-    display: grid;
-    grid-template-columns: 60% 40%;
     padding: 0;
 }
 
 .gridLeft{
     padding: 0;
+    position: relative;
 }
 
 .gridRight{
-    padding: 0 0 0 5%;
+    padding: 0;
 }
 
 .drag-area{
@@ -65,9 +63,7 @@ h1{
     flex-direction: column;
     align-items: center;
     height: 400px;
-    align-items: center;
     justify-content: center;
-    flex-direction: column;
     padding: 0;
 }
 
@@ -94,33 +90,31 @@ h1{
     color: white;
     border-radius: 5px;
     cursor: pointer;
-    margin: 20px 35% 0 35%;
-    width: 30%;
     box-shadow: 2px 4px 5px rgba(0, 0, 0, 0.25);
+    margin-top: 20px;
 }
 .drag-area img{
-    margin:5%;
-    height: 95%;
-    width: 95%;
+    height: 100%;
+    width: 100%;
     object-fit: cover;
     border-radius: 5px;
 }
 
 .detailCard{
-    padding: 10px;
-    width: 100%;
-    height: 50px;
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     background: #FFFAFA;
     box-shadow: 2px 4px 5px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
+    align-content: center;
+    padding: 0 10px;
+    margin: 20px 10px;
 }
 
 .detailCard .cardIcon{
-    font-size: 40px;
+    font-size: 30px;
 }
 
 .detailCard button{
@@ -130,9 +124,7 @@ h1{
 
 .imageFileName{
     font-family: 'Circular Std', serif;
-    font-size: 14px;
-    width: 100%;
-    padding: 0 20px;
+    /*font-size: 14px;*/
 }
 
 .loadingAnimation{
@@ -140,16 +132,28 @@ h1{
 }
 
 .enhanceBtn{
-    padding: 10px 25px;
     font-family: 'Circular Std', serif;
     font-size: 20px;
+    line-height: 50px;
     border: none;
     outline: none;
-    background: navy;
+    background: #019dad;
     color: white;
-    border-radius: 5px;
     cursor: pointer;
-    margin: 20px 20% 0 20%;
     width: 60%;
+    padding: 10px 0;
+    margin: 0 20%;
+    /* border-radius: 10px; */
     box-shadow: 2px 4px 5px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: row;
+}
+
+.loading-div {
+    position: absolute;
+    z-index: 2;
+    top: 20px;
+    right: 20px;
 }
