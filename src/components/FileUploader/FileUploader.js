@@ -71,7 +71,7 @@ function FileUploader(props) {
         const formData = new FormData()
         formData.append("file", fileState)
         const response = await toast.promise(
-            fetch("http://140.238.231.135:8000/uploadfile",
+            fetch("http://localhost:8000/uploadfile",
                 {
                     method: "POST", body: formData
                 })
